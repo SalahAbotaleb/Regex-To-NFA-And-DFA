@@ -1,0 +1,10 @@
+digraph automaton {
+	rankdir=LR
+	S0 [label=S0 color=black shape=circle]
+	S1 [label=S1 color=black shape=circle]
+	S2 [label=S2 color=black shape=doublecircle]
+	S1 -> S2 [label=xyz]
+	S0 -> S1 [label=a]
+	S2 [label=S2 color=black shape=doublecircle]
+	S0 -> S2 [label=abc]
+}

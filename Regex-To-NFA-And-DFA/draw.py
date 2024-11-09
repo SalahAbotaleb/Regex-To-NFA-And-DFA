@@ -4,7 +4,9 @@ from graphviz import Digraph
 class Drawer:
     def save_finite_automaton(graph: "Graph", name="automaton", format="png"):
         digraph = Digraph(name=name, format=format)
+        digraph.attr(rankdir='LR')
         Drawer.__dfs_to_create_automaton__(graph.get_start(), set(), digraph)
+        digraph.render(name)
 
     def __dfs_to_create_automaton__(curr_node: "Node", vis_nodes: set, digraph: Digraph):
         if curr_node in vis_nodes:
@@ -14,7 +16,7 @@ class Drawer:
         digraph.node(curr_node.id, label=curr_node.id,
                      color="black", shape=Drawer.__get__shape__(curr_node))
 
-        for edge in node.edges:
+        for edge in curr_node.edges:
             dest = edge.dest
             action = edge.action
             Drawer.__dfs_to_create_automaton__(dest, vis_nodes, digraph)
