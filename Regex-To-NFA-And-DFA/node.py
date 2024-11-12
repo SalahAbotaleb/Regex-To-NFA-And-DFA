@@ -6,8 +6,8 @@ class Node:
 
     id_generator = 0
 
-    def __init__(self, id: int = None):
-        self.edges = []
+    def __init__(self, id: str = None):
+        self.edges: list[Edge] = []
         self.is_terminal = 0
         self.is_start = 0
         if id == None:
@@ -16,8 +16,34 @@ class Node:
         else:
             self.id = id
 
-    def addEdge(self, dest: "Node", action: str):
+    def set_is_start(self, is_start):
+        self.is_start = is_start
+
+    def set_is_terminal(self, is_terminal):
+        self.is_terminal = is_terminal
+
+    def add_edge(self, dest: "Node", action: str):
         self.edges.append(Edge(dest, action))
+
+    def get_actions(self) -> set[str]:
+        actions = set()
+        for edge in self.edges:
+            actions.add(edge.action)
+        return actions
+
+    def get_action_and_dest_nodes_dict(self) -> dict[str:set[str]]:
+        '''
+        return a dictionary with key of actions and value as set of destination ids
+        '''
+        actions: dict[str:set[str]] = dict()
+        for edge in self.edges:
+            if edge.action not in actions:
+                actions[edge.action] = set()
+            actions[edge.action].add(edge.dest)
+        return actions
+
+    def get_edges(self) -> list[Edge]:
+        return self.edges
 
     def to_json(self):
         json = {}
@@ -34,5 +60,6 @@ class Node:
 if __name__ == "__main__":
     node1 = Node()
     node2 = Node()
-    node1.addEdge(node2, "a")
+    node1.add_edge(node2, "a")
     print(node1.to_json())
+    print(node1.get_actions())

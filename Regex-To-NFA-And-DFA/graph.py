@@ -3,9 +3,12 @@ from constants import JsonNamings
 
 
 class Graph:
-    def __init__(self, json: dict = None):
+    def __init__(self, json: dict = None, start_node: Node = None):
         if json is None:
-            self.start = Node()
+            if start_node is None:
+                self.start = Node()
+            else:
+                self.start = start_node
         else:
             self.__create_from_json__(json)
 
@@ -51,7 +54,7 @@ class Graph:
                 for node_id in nodes_ids:
                     if node_id not in nodes_dict:
                         nodes_dict[node_id] = Node(node_id)
-                    node.addEdge(nodes_dict[node_id], action)
+                    node.add_edge(nodes_dict[node_id], action)
 
     def get_start(self) -> Node:
         return self.start
@@ -97,8 +100,8 @@ if __name__ == "__main__":
     node2 = Node()
     node3 = Node()
     node2.is_terminal = 1
-    node2.addEdge(node3, "xyz")
-    node1.addEdge(node2, "a")
+    node2.add_edge(node3, "xyz")
+    node1.add_edge(node2, "a")
     print(g1.get_start())
     print(g1.get_terminals())
     print(g1.to_json())

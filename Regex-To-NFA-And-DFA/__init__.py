@@ -9,9 +9,9 @@ if __name__ == "__main__":
     # node2 = Node()
     # node3 = Node()
     # node3.is_terminal = 1
-    # node2.addEdge(node3, "xyz")
-    # node1.addEdge(node2, "a")
-    # node1.addEdge(node3, "abc")
+    # node2.add_edge(node3, "xyz")
+    # node1.add_edge(node2, "a")
+    # node1.add_edge(node3, "abc")
     # print(g1.get_start())
     # print(g1.get_terminals())
     # print(g1.to_json())
