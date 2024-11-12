@@ -16,13 +16,13 @@ class Graph:
             "startingState": "S0",
             "S0": {
                 "isTerminatingState": false,
-                "A": "S1",
-                "B": "S0"
+                "A": ["S1"],
+                "B": ["S0"]
             },
             "S1": {
                 "isTerminatingState": true,
-                "A": "S1",
-                "B": "S1"
+                "A": ["S1"],
+                "B": ["S1"]
             }
         }
         '''
@@ -47,10 +47,11 @@ class Graph:
                 node.is_terminal = value
             else:
                 action = key
-                node_id = value
-                if node_id not in nodes_dict:
-                    nodes_dict[node_id] = Node(node_id)
-                node.addEdge(nodes_dict[node_id], action)
+                nodes_ids = value
+                for node_id in nodes_ids:
+                    if node_id not in nodes_dict:
+                        nodes_dict[node_id] = Node(node_id)
+                    node.addEdge(nodes_dict[node_id], action)
 
     def get_start(self) -> Node:
         return self.start

@@ -23,7 +23,11 @@ class Node:
         json = {}
         json[JsonNamings.TERMINATING_STATE] = bool(self.is_terminal)
         for edge in self.edges:
-            json[edge.action] = str(edge.dest.id)
+            if edge.action not in json:
+                json[edge.action] = []
+                json[edge.action].append(str(edge.dest.id))
+            else:
+                json[edge.action].append(str(edge.dest.id))
         return json
 
 

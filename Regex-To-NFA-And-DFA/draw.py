@@ -9,7 +9,7 @@ class Drawer:
         digraph.render(name)
 
     def __dfs_to_create_automaton__(curr_node: "Node", vis_nodes: set, digraph: Digraph):
-        if curr_node in vis_nodes:
+        if curr_node.id in vis_nodes:
             return
 
         vis_nodes.add(curr_node.id)
