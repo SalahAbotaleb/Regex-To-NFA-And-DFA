@@ -1,0 +1,21 @@
+{
+    "startingState": "S21",
+    "S21": {
+        "isTerminatingState": true,
+        "a-z": [
+            "S21"
+        ],
+        "0-9": [
+            "S22"
+        ],
+        "A-Z": [
+            "S21"
+        ]
+    },
+    "S22": {
+        "isTerminatingState": true,
+        "0-9": [
+            "S22"
+        ]
+    }
+}
