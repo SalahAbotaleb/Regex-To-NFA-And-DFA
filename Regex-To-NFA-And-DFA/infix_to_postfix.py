@@ -1,5 +1,5 @@
 
-def infix_to_postfix(infix:str)->str:
+def infix_to_postfix(infix:str):
     precedence = dict()
     precedence['*'] = 5
     precedence['+'] = 4
@@ -32,9 +32,7 @@ def infix_to_postfix(infix:str)->str:
     postfix = []
     classes = False
 
-    #unhandled cases for infix to postfix conversion
-    # ( ) empty parenthesis
-    # [ ] empty square bracket
+
     i = -1
     skip = False                # is used to skip the next character in the infix expression if it was handeled in the previous iteration like the '-' character
     for c in infix:
@@ -44,10 +42,16 @@ def infix_to_postfix(infix:str)->str:
             continue
 
         if c == '(':
-            # TODO: might need to fix the case where '(' is inside a square bracket
             stack.append(c)
+            if infix[i+1] == ')':
+                return False            # Empty parenthesis
+            if classes:
+                return False            # '(' inside a square bracket
+
         elif c == '[':
             stack.append(c)
+            if infix[i+1] == ']':
+                return False            # Empty square bracket
             classes = True
 
         elif c == ')':
@@ -66,6 +70,8 @@ def infix_to_postfix(infix:str)->str:
             stack.pop()
 
         elif c in precedence:
+            if classes:
+                return False            # Operator inside a square bracket # review this
             while len(stack) > 0 and precedence[stack[-1]] >= precedence[c]:
                 postfix.append(stack.pop())
             stack.append(c)
