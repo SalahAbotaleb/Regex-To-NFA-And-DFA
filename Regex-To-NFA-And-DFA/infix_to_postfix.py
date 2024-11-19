@@ -28,7 +28,6 @@ def infix_to_postfix(infix:str)->str:
 
         j += 1
 
-    print(infix)
     stack = []
     postfix = []
     classes = False
