@@ -7,8 +7,10 @@ class Drawer:
     def save_finite_automaton(graph: "Graph", name="automaton", format="png"):
         digraph = Digraph(name=name, format=format)
         digraph.attr(rankdir='LR')
+        digraph.node("start", label="start", shape="none")
         edges = Drawer.__dfs_to_create_automaton__(
             graph.get_start(), set(), digraph)
+        digraph.edge("start", graph.get_start().id)
         for edge in edges:
             digraph.edge(edge[0], edge[1], label=edge[2])
         digraph.render(name)
