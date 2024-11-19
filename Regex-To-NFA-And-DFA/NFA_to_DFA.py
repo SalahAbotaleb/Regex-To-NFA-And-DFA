@@ -8,6 +8,8 @@ from draw import Drawer
 from common_types import *
 from graph_builder import GraphBuilder
 from DFA_utils import DFAUtils
+from graph_to_json import GraphToJson
+
 '''
 Basic idea:
 
@@ -100,27 +102,23 @@ class NFAToDFA:
                     return True
         return False
 
-    def __is_node_start__(self, curr_node: DFANode, nfa_start: Node):
-        return True if nfa_start.id in curr_node else False
-
     def __get_graph_from_dfa_nodes__(self, dfa_nodes: DFAAdjacencyList) -> Graph:
         generated_graph = None
         generated_graph_nodes: dict[DFANode:Node] = dict()
-        nfa_start = self.graph.get_start()
         nfa_terminals = self.graph.get_terminals()
+        is_epsilon_closure_node = True
         for node, edge_list in dfa_nodes.items():
             if node not in generated_graph_nodes:
                 generated_graph_nodes[node] = Node()
 
             new_node = generated_graph_nodes[node]
-            is_start = self.__is_node_start__(node, nfa_start)
             is_terminal = self.__is_node_terminal__(node, nfa_terminals)
 
-            if is_start == True:
-                new_node.set_is_start(True)
+            if is_epsilon_closure_node == True:
                 generated_graph = Graph(start_node=new_node)
+                new_node.set_is_start(True)
+                is_epsilon_closure_node = False
 
-            new_node.set_is_start(is_start)
             new_node.set_is_terminal(is_terminal)
 
             for action, adj_node in edge_list:
@@ -138,4 +136,6 @@ if __name__ == "__main__":
     jsonG = JsonUtils.get_dict_from_file("data1.json")
     g = GraphBuilder.fromJson(jsonG)
     nfaConverter = NFAToDFA(g)
-    Drawer.save_finite_automaton(nfaConverter.convert())
+    g_dfa = nfaConverter.convert()
+    print(GraphToJson.convert(g_dfa))
+    Drawer().save_finite_automaton(g_dfa)
