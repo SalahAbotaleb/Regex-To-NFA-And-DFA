@@ -20,14 +20,14 @@ def infix_to_postfix(infix:str):
     #checks operators and are at the beginning or end of the infix expression
     if infix[0] in ['*','+','?','|'] or infix[-1] in ['|']:
         return False,"Operator at the beginning or end of the expression"
-    # TODO: check for other invalid cases of quantifiers following each other
+
     for i in range(len(infix)-1):
         # checks that an | operator is followed by a quantifier
         if infix[i] in ['*','+','?'] and infix[i+1] in ['*','+','?']:
             return False,"Quantifier Overwrite"
         if infix[i] == '|' and infix[i+1] in ['*','+','?']:
             return False,"| followed by a quantifier"
-        
+
         if infix[j] == '[':
             classes = True
         if infix[j] == ']':
@@ -65,6 +65,8 @@ def infix_to_postfix(infix:str):
             classes = True
 
         elif c == ')':
+            if classes:
+                return False,"')' inside a square bracket"
             while stack[-1] != '(':
                 postfix.append(stack.pop())
                 if len(stack) == 0:
