@@ -3,9 +3,8 @@ from node import Node
 import constants
 from draw import Drawer
 
-# operations available on graphs or | concatenation # one or more + zero or more * optional ? character class . a b etc ... ranges ie. a-c
-
-
+# operations available on graphs or | concatenation # one or more + zero or more * optional ?
+# character class . a b etc ... ranges ie. a-c
 def str_to_graph(char: str) -> Graph:
     '''
     Returns a new graph that is the result of the input character or list of characters.

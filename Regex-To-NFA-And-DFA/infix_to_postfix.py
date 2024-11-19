@@ -1,5 +1,5 @@
 
-def infix_to_postfix(infix:str)->str:
+def infix_to_postfix(infix:str):
     precedence = dict()
     precedence['*'] = 5
     precedence['+'] = 4
@@ -17,7 +17,15 @@ def infix_to_postfix(infix:str)->str:
     infix = list(infix)
     j = 0
     classes = False
+    #checks operators and are at the beginning or end of the infix expression
+    if infix[0] in ['*','+','?','|'] or infix[-1] in ['|']:
+        return False,"Operator at the beginning or end of the expression"
+    # TODO: check for other invalid cases of quantifiers following each other
     for i in range(len(infix)-1):
+        # checks that an | operator is followed by a quantifier
+        if infix[i] == '|' and infix[i+1] in ['*','+','?']:
+            return False,"| followed by a quantifier"
+        
         if infix[j] == '[':
             classes = True
         if infix[j] == ']':
@@ -28,14 +36,11 @@ def infix_to_postfix(infix:str)->str:
 
         j += 1
 
-    print(infix)
     stack = []
     postfix = []
     classes = False
 
-    #unhandled cases for infix to postfix conversion
-    # ( ) empty parenthesis
-    # [ ] empty square bracket
+
     i = -1
     skip = False                # is used to skip the next character in the infix expression if it was handeled in the previous iteration like the '-' character
     for c in infix:
@@ -45,41 +50,49 @@ def infix_to_postfix(infix:str)->str:
             continue
 
         if c == '(':
-            # TODO: might need to fix the case where '(' is inside a square bracket
             stack.append(c)
+            if infix[i+1] == ')':
+                return False,"Empty parenthesis"            # Empty parenthesis
+            if classes:
+                return False,"'(' inside a square bracket"  # '(' inside a square bracket
+
         elif c == '[':
             stack.append(c)
+            if infix[i+1] == ']':
+                return False,"Empty square bracket"         # Empty square bracket
             classes = True
 
         elif c == ')':
             while stack[-1] != '(':
                 postfix.append(stack.pop())
                 if len(stack) == 0:
-                    return False            # Unmatched parenthesis
+                    return False,"Unmatched parenthesis"    # Unmatched parenthesis
             stack.pop()
 
         elif c == ']':
             while stack[-1] != '[':
                 postfix.append(stack.pop())
                 if len(stack) == 0:
-                    return False            # Unmatched square bracket
+                    return False,"Unmatched square bracket" # Unmatched square bracket
             classes = False
             stack.pop()
 
         elif c in precedence:
+            if classes:
+                return False,"Operator inside a square bracket"         # Operator inside a square bracket # review this
             while len(stack) > 0 and precedence[stack[-1]] >= precedence[c]:
                 postfix.append(stack.pop())
             stack.append(c)
         elif c == '-':
             if not classes:
-                return False                # '-' is not in a square bracket
+                return False,"- not in square brackets"                # '-' is not in a square bracket
             prev_char = postfix[-1]
             next_char = infix[i+1]
             upper = (prev_char in upper_alphabet and next_char in upper_alphabet)
             lower = (prev_char in lower_alphabet and next_char in lower_alphabet)
             digit = (prev_char in digits and next_char in digits)
-            if not (upper or lower or digit):
-                return False                # '-' is not between two same type of characters
+            if not (upper or lower or digit) or ord(next_char) < ord(prev_char): # next_char is before prev_char
+                return False,"Pattern Error"                                    # '-' is not between two same type of characters or characters are not in order
             postfix[-1] = prev_char + '-' + next_char
             i += 1
             skip = True
@@ -89,14 +102,14 @@ def infix_to_postfix(infix:str)->str:
                 postfix.append('|')
 
         else:
-            return False                    # Invalid character
+            return False,"Invalid character"# Invalid character
     while len(stack) > 0:
         postfix.append(stack.pop())
     if '(' in postfix or ')' in postfix:
-        return False                        # Unmatched parenthesis
+        return False,"Unmatched parenthesis"# Unmatched parenthesis
     if '[' in postfix or ']' in postfix:
-        return False                        # Unmatched square bracket
-    return postfix
+        return False,"Unmatched square bracket"# Unmatched square bracket
+    return True,postfix
 
 
 if __name__ == "__main__":
