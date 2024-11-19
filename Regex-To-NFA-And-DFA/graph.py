@@ -8,6 +8,7 @@ class Graph:
             self.start = Node()
         else:
             self.start = start_node
+        self.local_start_id = 0
 
     def set_start(self, start_node: Node):
         self.start = start_node
@@ -62,6 +63,23 @@ class Graph:
 
         return ans
 
+    def rename_nodes_ids(self):
+        '''Renames graph nodes ids to start from start_id and end at nodes_cnt'''
+        new_ids = dict()
+        self.__get_new_nodes_ids__(self.get_start(), new_ids)
+        for _, node_item in new_ids.items():
+            node, new_id = node_item
+            node.id = new_id
+
+    def __get_new_nodes_ids__(self, curr_node: Node, visited_nodes: Dict[NodeId, Tuple[Node, NodeId]]):
+        if curr_node in visited_nodes:
+            return
+        visited_nodes[curr_node.id] = (curr_node, f"S{self.local_start_id}")
+        self.local_start_id = self.local_start_id+1
+        for edge in curr_node.get_edges():
+            neighbor = edge.dest
+            self.__get_new_nodes_ids__(neighbor, visited_nodes)
+
 
 if __name__ == "__main__":
     g1 = Graph()
@@ -71,6 +89,7 @@ if __name__ == "__main__":
     node2.is_terminal = 1
     node2.add_edge(node3, "xyz")
     node1.add_edge(node2, "a")
+    g1.rename_nodes_ids()
     # print(g1.get_start())
     # print(g1.get_terminals())
     # print(g1.to_json())

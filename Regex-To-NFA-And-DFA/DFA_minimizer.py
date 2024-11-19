@@ -158,5 +158,5 @@ if __name__ == "__main__":
     g2 = NFAToDFA(g).convert()
     dfaMinimizer = DFAMinimizer(g2)
     min_g = dfaMinimizer.minimize()
-    Drawer().save_finite_automaton(g2, "auto")
-    Drawer().save_finite_automaton(min_g, "auto1")
+    Drawer.save_finite_automaton(g2, "auto")
+    Drawer.save_finite_automaton(min_g, "auto1")

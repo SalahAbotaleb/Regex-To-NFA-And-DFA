@@ -2,10 +2,10 @@
     "startingState": "S21",
     "S21": {
         "isTerminatingState": false,
-        "A-Z": [
+        "a-z": [
             "S22"
         ],
-        "a-z": [
+        "A-Z": [
             "S22"
         ]
     },
@@ -14,10 +14,10 @@
         "0-9": [
             "S23"
         ],
-        "A-Z": [
+        "a-z": [
             "S22"
         ],
-        "a-z": [
+        "A-Z": [
             "S22"
         ]
     },

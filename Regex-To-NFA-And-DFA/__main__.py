@@ -85,13 +85,15 @@ if __name__ == "__main__":
             with open("pattern.txt", "w") as file:
                 file.write(pattern)
             nfa_graph = regex_to_NFA(pattern)
+            nfa_graph.rename_nodes_ids()
             GraphToJson.convert_and_dump(nfa_graph, "nfa.json")
-            Drawer().save_finite_automaton(nfa_graph, "nfa")
+            Drawer.save_finite_automaton(nfa_graph, "nfa")
             dfa_graph = NFAToDFA(nfa_graph).convert()
             dfa_minimizer = DFAMinimizer(dfa_graph)
             min_dfa_graph = dfa_minimizer.minimize()
+            min_dfa_graph.rename_nodes_ids()
             GraphToJson.convert_and_dump(min_dfa_graph, "dfa.json")
-            Drawer().save_finite_automaton(min_dfa_graph, "dfa")
+            Drawer.save_finite_automaton(min_dfa_graph, "dfa")
         except ValueError as e:
             print("Caught an error:", e)
         os.chdir(os.pardir)
