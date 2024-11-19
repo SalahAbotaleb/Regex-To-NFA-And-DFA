@@ -23,9 +23,9 @@ def infix_to_postfix(infix:str):
 
     for i in range(len(infix)-1):
         # checks that an | operator is followed by a quantifier
-        if infix[i] in ['*','+','?'] and infix[i+1] in ['*','+','?']:
+        if infix[j] in ['*','+','?'] and infix[j+1] in ['*','+','?']:
             return False,"Quantifier Overwrite"
-        if infix[i] == '|' and infix[i+1] in ['*','+','?',')',']']:
+        if infix[j] == '|' and infix[j+1] in ['*','+','?',')',']']:
             return False,"| followed by a quantifier or a closing bracket"
 
         if infix[j] == '[':
