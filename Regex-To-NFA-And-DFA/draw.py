@@ -19,9 +19,8 @@ class Drawer:
             return []
 
         vis_nodes.add(curr_node.id)
-        digraph.node(curr_node.id, label=f"S{Drawer.node_idx}",
+        digraph.node(curr_node.id, label=curr_node.id,
                      color="black", shape=Drawer.__get__shape__(curr_node))
-        Drawer.node_idx = Drawer.node_idx+1
         edges: list[tuple] = []
         for edge in curr_node.edges:
             dest = edge.dest

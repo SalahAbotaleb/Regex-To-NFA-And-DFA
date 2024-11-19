@@ -57,7 +57,7 @@ if __name__ == "__main__":
         "a|b|",
         "a|b|(c[dsa]?(soc0[1-9]*)?)+n0+(lr*em)*",
         "((((((((((a*)*)*)*)*)*)*)*)*)*)*",
-        "((((((((((a+)+)+)+)+)+)+)+)+)+",
+        "((((((((((a+)+)+)+)+)+)+)+)+))+",
         "((((((((((a?)?)?)?)?)?)?)?)?)?)?",
         "pas$word",
         "unr3al",
@@ -72,11 +72,26 @@ if __name__ == "__main__":
         "+",
         "?",
         "|",
+        ')AB(',
+        "A|",
+        "[Z-A]",
+        "AB",
+        "A|B",
+        "(AB|[A-Z])+[A-Z]*",
+        "(AB|C|[A-Z]S*)+ABC",
+        "(((AB)((A|B)*))(AB))",
+        "AB(A|B)*AB", "([A-Z])",
+        "([A-C][A-C]|A|ABCD*C+)[B-D]",
+        "(a|b)*abb",
+        "m?[0-9]+",
+        "((a|b|c)+9|55?(zzz)*)",
+        "((a|b|c+v))"
     ]
     testcase = 0
     for pattern in patterns:
         path = Path(f"test{testcase}")
         print(f"=======================test{testcase}========================")
+        print(f"test{testcase} regex: {pattern}")
         if os.path.exists(path):
             shutil.rmtree(path)
         path.mkdir(parents=True, exist_ok=True)
@@ -94,7 +109,9 @@ if __name__ == "__main__":
             min_dfa_graph.rename_nodes_ids()
             GraphToJson.convert_and_dump(min_dfa_graph, "dfa.json")
             Drawer.save_finite_automaton(min_dfa_graph, "dfa")
+            print("PASS")
         except ValueError as e:
+            print("FAIL")
             print("Caught an error:", e)
         os.chdir(os.pardir)
         testcase = testcase+1

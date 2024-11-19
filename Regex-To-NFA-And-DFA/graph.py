@@ -72,7 +72,7 @@ class Graph:
             node.id = new_id
 
     def __get_new_nodes_ids__(self, curr_node: Node, visited_nodes: Dict[NodeId, Tuple[Node, NodeId]]):
-        if curr_node in visited_nodes:
+        if curr_node.id in visited_nodes:
             return
         visited_nodes[curr_node.id] = (curr_node, f"S{self.local_start_id}")
         self.local_start_id = self.local_start_id+1

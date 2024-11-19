@@ -1,6 +1,38 @@
 {
-    "startingState": "S8",
-    "S8": {
+    "startingState": "S0",
+    "S0": {
+        "isTerminatingState": false,
+        "epsilon": [
+            "S1"
+        ]
+    },
+    "S1": {
+        "isTerminatingState": false,
+        "epsilon": [
+            "S2",
+            "S10"
+        ]
+    },
+    "S2": {
+        "isTerminatingState": false,
+        "A-Z": [
+            "S3"
+        ]
+    },
+    "S3": {
+        "isTerminatingState": false,
+        "epsilon": [
+            "S4"
+        ]
+    },
+    "S4": {
+        "isTerminatingState": false,
+        "epsilon": [
+            "S5",
+            "S0"
+        ]
+    },
+    "S5": {
         "isTerminatingState": false,
         "epsilon": [
             "S6"
@@ -9,68 +41,36 @@
     "S6": {
         "isTerminatingState": false,
         "epsilon": [
-            "S1",
-            "S4"
-        ]
-    },
-    "S1": {
-        "isTerminatingState": false,
-        "A-Z": [
-            "S2"
-        ]
-    },
-    "S2": {
-        "isTerminatingState": false,
-        "epsilon": [
-            "S7"
+            "S7",
+            "S9"
         ]
     },
     "S7": {
         "isTerminatingState": false,
-        "epsilon": [
-            "S9",
+        "0-9": [
             "S8"
         ]
     },
-    "S9": {
+    "S8": {
         "isTerminatingState": false,
         "epsilon": [
-            "S13"
+            "S9",
+            "S6"
         ]
     },
-    "S13": {
+    "S9": {
+        "isTerminatingState": true
+    },
+    "S10": {
         "isTerminatingState": false,
-        "epsilon": [
-            "S11",
-            "S14"
+        "a-z": [
+            "S11"
         ]
     },
     "S11": {
         "isTerminatingState": false,
-        "0-9": [
-            "S12"
-        ]
-    },
-    "S12": {
-        "isTerminatingState": false,
         "epsilon": [
-            "S14",
-            "S13"
-        ]
-    },
-    "S14": {
-        "isTerminatingState": true
-    },
-    "S4": {
-        "isTerminatingState": false,
-        "a-z": [
-            "S5"
-        ]
-    },
-    "S5": {
-        "isTerminatingState": false,
-        "epsilon": [
-            "S7"
+            "S4"
         ]
     }
 }
