@@ -100,6 +100,7 @@ def optional(graph: Graph) -> Graph:
     '''
     Returns a new graph that is the result of the optional operation on the input graph.
     '''
+
     final_graph = Graph()
     final_graph.start.add_edge(
         graph.get_start(), constants.GraphTerm.EPSILON_ACTION)
@@ -109,8 +110,11 @@ def optional(graph: Graph) -> Graph:
     terminal = graph.get_terminals()[0]
     terminal.add_edge(graph_terminal, constants.GraphTerm.EPSILON_ACTION)
     terminal.set_is_terminal(False)
-    final_graph.start.add_edge(
-        graph_terminal, constants.GraphTerm.EPSILON_ACTION)
+    terminal = Node()
+    terminal2 = Node()
+    terminal.add_edge(terminal2, constants.GraphTerm.EPSILON_ACTION)
+    terminal2.add_edge(graph_terminal, constants.GraphTerm.EPSILON_ACTION)
+    final_graph.start.add_edge(terminal, constants.GraphTerm.EPSILON_ACTION)
 
     return final_graph
 
@@ -118,7 +122,6 @@ def optional(graph: Graph) -> Graph:
 if __name__ == "__main__":
 
     g1 = str_to_graph("a")
-    print(g1.to_json())
     Drawer.save_finite_automaton(g1, "g1 a")
 
     g2 = str_to_graph("b")
