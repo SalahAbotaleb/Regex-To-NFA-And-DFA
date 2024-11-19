@@ -1,4 +1,5 @@
 from graphviz import Digraph
+import os
 
 
 class Drawer:
@@ -7,6 +8,7 @@ class Drawer:
         digraph.attr(rankdir='LR')
         Drawer.__dfs_to_create_automaton__(graph.get_start(), set(), digraph)
         digraph.render(name)
+        Drawer.__remove_intermediate_files__(name)
 
     def __dfs_to_create_automaton__(curr_node: "Node", vis_nodes: set, digraph: Digraph):
         if curr_node.id in vis_nodes:
@@ -24,3 +26,7 @@ class Drawer:
 
     def __get__shape__(node: "Node"):
         return "doublecircle" if node.is_terminal else "circle"
+
+    def __remove_intermediate_files__(output_file):
+        if os.path.exists(output_file):
+            os.remove(output_file)
