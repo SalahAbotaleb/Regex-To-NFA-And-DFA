@@ -138,4 +138,4 @@ if __name__ == "__main__":
     nfaConverter = NFAToDFA(g)
     g_dfa = nfaConverter.convert()
     print(GraphToJson.convert(g_dfa))
-    Drawer().save_finite_automaton(g_dfa)
+    Drawer.save_finite_automaton(g_dfa)

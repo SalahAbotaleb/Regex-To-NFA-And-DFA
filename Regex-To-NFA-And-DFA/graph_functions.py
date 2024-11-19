@@ -124,37 +124,37 @@ def optional(graph: Graph) -> Graph:
 if __name__ == "__main__":
 
     g1 = str_to_graph("a")
-    Drawer().save_finite_automaton(g1, "g1 a")
+    Drawer.save_finite_automaton(g1, "g1 a")
 
     g2 = str_to_graph("b")
-    Drawer().save_finite_automaton(g2, "g2 b")
+    Drawer.save_finite_automaton(g2, "g2 b")
 
     g3 = or_graphs(g1, g2)
-    Drawer().save_finite_automaton(g3, "g3 a(or)b")
+    Drawer.save_finite_automaton(g3, "g3 a(or)b")
 
     g4 = str_to_graph("c")
-    Drawer().save_finite_automaton(g4, "g4 c")
+    Drawer.save_finite_automaton(g4, "g4 c")
 
     g5 = str_to_graph("d")
-    Drawer().save_finite_automaton(g5, "g5 d")
+    Drawer.save_finite_automaton(g5, "g5 d")
 
     g6 = concat_graphs(g4, g5)
-    Drawer().save_finite_automaton(g6, "g6 c(and)d")
+    Drawer.save_finite_automaton(g6, "g6 c(and)d")
 
     g7 = str_to_graph("a-g")
-    Drawer().save_finite_automaton(g7, "g7 [a-g]")
+    Drawer.save_finite_automaton(g7, "g7 [a-g]")
 
     g8 = one_or_more(g7)
-    Drawer().save_finite_automaton(g8, "g8 [a-g]+")
+    Drawer.save_finite_automaton(g8, "g8 [a-g]+")
 
     g9 = str_to_graph("1")
-    Drawer().save_finite_automaton(g9, "g9 1")
+    Drawer.save_finite_automaton(g9, "g9 1")
 
     g10 = zero_or_more(g9)
-    Drawer().save_finite_automaton(g10, "g10 1(ZeroOrMore)")
+    Drawer.save_finite_automaton(g10, "g10 1(ZeroOrMore)")
 
     g11 = str_to_graph("A-D")
-    Drawer().save_finite_automaton(g11, "g11 [A-D]")
+    Drawer.save_finite_automaton(g11, "g11 [A-D]")
 
     g12 = optional(g11)
-    Drawer().save_finite_automaton(g12, "g12 [A-D](Optional)")
+    Drawer.save_finite_automaton(g12, "g12 [A-D](Optional)")
