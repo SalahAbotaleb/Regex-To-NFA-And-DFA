@@ -23,6 +23,8 @@ def infix_to_postfix(infix:str):
     # TODO: check for other invalid cases of quantifiers following each other
     for i in range(len(infix)-1):
         # checks that an | operator is followed by a quantifier
+        if infix[i] in ['*','+','?'] and infix[i+1] in ['*','+','?']:
+            return False,"Quantifier Overwrite"
         if infix[i] == '|' and infix[i+1] in ['*','+','?']:
             return False,"| followed by a quantifier"
         
