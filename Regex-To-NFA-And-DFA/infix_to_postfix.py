@@ -67,6 +67,8 @@ def infix_to_postfix(infix:str):
         elif c == ')':
             if classes:
                 return False,"')' inside a square bracket"
+            if len(stack) == 0:
+                return False,"Unmatched parenthesis"        # Unmatched parenthesis
             while stack[-1] != '(':
                 postfix.append(stack.pop())
                 if len(stack) == 0:
@@ -74,6 +76,8 @@ def infix_to_postfix(infix:str):
             stack.pop()
 
         elif c == ']':
+            if len(stack) == 0:
+                return False,"Unmatched square bracket"     # Unmatched square bracket
             while stack[-1] != '[':
                 postfix.append(stack.pop())
                 if len(stack) == 0:
