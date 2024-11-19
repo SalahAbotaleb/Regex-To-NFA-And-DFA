@@ -7,10 +7,10 @@ def regex_to_NFA(regex: str) -> Graph:
     Returns a new graph that is the result of the regex to NFA operation on the input regex.
     '''
     postfix = infix_to_postfix(regex)
-    if not postfix:
-        return None
+    if not postfix[0]:
+        return postfix[1]
     stack = []
-    for char in postfix:
+    for char in postfix[1]:
         if char == '|':
             graph2 = stack.pop()
             graph1 = stack.pop()
@@ -34,7 +34,9 @@ def regex_to_NFA(regex: str) -> Graph:
 
 
 if __name__ == '__main__':
-    regex = "ac|b[fd]"
+    regex = "a*?"
     graph = regex_to_NFA(regex)
-
-    Drawer.save_finite_automaton(graph, "regex ")
+    if  isinstance(graph,Graph):
+        Drawer.save_finite_automaton(graph, "regex ")
+    else:
+        print(graph)
