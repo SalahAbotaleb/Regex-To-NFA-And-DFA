@@ -5,7 +5,9 @@ from json_utils import JsonUtils
 from typing import Dict, Set, TypeAlias
 from collections import deque
 from draw import Drawer
-
+from common_types import *
+from graph_builder import GraphBuilder
+from DFA_utils import DFAUtils
 '''
 Basic idea:
 
@@ -29,84 +31,37 @@ Basic idea:
     add new created nodes to queue then process till no more nodes in the queue
 '''
 
+DFAAdjacencyList: TypeAlias = Dict["DFANode", list[Tuple[Action, "DFANode"]]]
+
 
 class DFANode(frozenset):
     def __new__(cls, data):
         return super(DFANode, cls).__new__(cls, data)
 
 
-AdjacencyList: TypeAlias = Dict[str, Dict[str, Set[str]]]
-DFANodes: TypeAlias = Dict[DFANode, list[tuple[str, DFANode]]]
+NFAAdjacencyList: TypeAlias = AdjacencyList
+DFAAdjacencyList: TypeAlias = Dict[DFANode, list[tuple[Action, DFANode]]]
 
 
 class NFAToDFA:
     def __init__(self, graph: Graph):
         self.graph = graph
 
-    def __get_all_adjacent_nodes_ids__(self, node: Node, action: str, vis_nodes: set[str]) -> set[str]:
-        if node.id in vis_nodes:
-            return None
+    def __get_epsilon_closure__(self) -> set[NodeId]:
+        return [self.graph.get_start().id, *DFAUtils.get_all_adjacent_nodes_ids(self.graph.get_start(), GraphTerm.EPSILON_ACTION)]
 
-        vis_nodes.add(node.id)
-        adj_nodes = set()
-        edges = node.get_edges()
-
-        for edge in edges:
-            if edge.action == action:
-                adj_nodes.add(edge.dest.id)
-                next_nodes = self.__get_all_adjacent_nodes_ids__(
-                    edge.dest, GraphTerm.EPSILON_ACTION, vis_nodes)
-                if next_nodes != None:
-                    adj_nodes.update(next_nodes)
-        return adj_nodes
-
-    def __get_adjacency_list__(self, node: Node, vis_nodes: set[str]) -> AdjacencyList:
-        '''
-            returns adjacency list is in form of:
-            {
-                Node_Name: {
-                    action: {all possible nodes can be visited even with epsilon move after the action}
-                }
-            }
-        '''
-        if node.id in vis_nodes:
-            return None
-
-        vis_nodes.add(node.id)
-        node_entry = {}
-        node_entry[node.id] = dict()
-
-        action_dest_nodes: dict[str:set[str]
-                                ] = node.get_action_and_dest_nodes_dict()
-
-        for action, dest_nodes in action_dest_nodes.items():
-            if action not in node_entry[node.id]:
-                node_entry[node.id][action] = set()
-            adj_nodes = self.__get_all_adjacent_nodes_ids__(
-                node, action, set())
-            node_entry[node.id][action].update(adj_nodes)
-            for dest_node in dest_nodes:
-                next_res = self.__get_adjacency_list__(dest_node, vis_nodes)
-                if next_res != None:
-                    node_entry.update(next_res)
-        return node_entry
-
-    def __get_epsilon_closure__(self) -> set[str]:
-        return [self.graph.get_start().id, *self.__get_all_adjacent_nodes_ids__(self.graph.get_start(), GraphTerm.EPSILON_ACTION, set())]
-
-    def __get_dfa_nodes__(self) -> DFANodes:
-        nodes: set[DFANode] = set()
+    def __get_dfa_adjacency_list__(self) -> DFAAdjacencyList:
+        dfa_nodes: set[DFANode] = set()
         queue: deque[DFANode] = deque()
-        adj_list: AdjacencyList = self.__get_adjacency_list__(
-            self.graph.get_start(), set())
-        init_node_ids: set[str] = self.__get_epsilon_closure__()
+        adj_list: NFAAdjacencyList = DFAUtils.get_adjacency_list(self.graph)
+        init_nodes_ids: set[str] = self.__get_epsilon_closure__()
 
-        init_node = DFANode(init_node_ids)
-        nodes: dict[DFANode:list[DFANode]] = dict()
+        init_node = DFANode(init_nodes_ids)
+        dfa_nodes: DFAAdjacencyList = dict()
         queue.append(init_node)
 
         '''
-            Adjacency list format
+            NFA Adjacency list format
             {
                 Node_Name: {
                     action: {all possible nodes can be visited even with epsilon move after the action}
@@ -114,28 +69,29 @@ class NFAToDFA:
             }
         '''
         while queue:
-            curr_node: DFANode = queue.popleft()
-            edges: dict[str, set[str]] = dict()
-            if curr_node not in nodes:
-                nodes[curr_node] = []
+            curr_dfa_node: DFANode = queue.popleft()
+            edges: dict[Action, set[NodeId]] = dict()
+            if curr_dfa_node not in dfa_nodes:
+                dfa_nodes[curr_dfa_node] = []
 
-            for state in curr_node:
-                for action in adj_list[state]:
+            # A DFANode contains multiple Ids for example: 1,5,0,3
+            for node_id in curr_dfa_node:
+                for action in adj_list[node_id]:
                     if action == GraphTerm.EPSILON_ACTION:
                         continue
                     if action not in edges:
                         edges[action] = set()
-                    for adj_state in adj_list[state][action]:
-                        edges[action].add(adj_state)
+                    for adj_node_id in adj_list[node_id][action]:
+                        edges[action].add(adj_node_id)
 
             for action, dest in edges.items():
                 dest_dfa_node = DFANode(dest)
-                if dest_dfa_node not in nodes:
-                    nodes[dest_dfa_node] = []
+                if dest_dfa_node not in dfa_nodes:
+                    dfa_nodes[dest_dfa_node] = []
                     queue.append(dest_dfa_node)
-                nodes[curr_node].append((action, dest_dfa_node))
+                dfa_nodes[curr_dfa_node].append((action, dest_dfa_node))
 
-        return nodes
+        return dfa_nodes
 
     def __is_node_terminal__(self, curr_node: DFANode, nfa_terminals: list[Node]):
         for state in curr_node:
@@ -147,13 +103,12 @@ class NFAToDFA:
     def __is_node_start__(self, curr_node: DFANode, nfa_start: Node):
         return True if nfa_start.id in curr_node else False
 
-# DFANodes: TypeAlias = Dict[DFANode:list[tuple(str, DFANode)]]
-    def __get_graph_from_dfa_nodes__(self, dfa_nodes: DFANodes) -> Graph:
+    def __get_graph_from_dfa_nodes__(self, dfa_nodes: DFAAdjacencyList) -> Graph:
         generated_graph = None
         generated_graph_nodes: dict[DFANode:Node] = dict()
         nfa_start = self.graph.get_start()
         nfa_terminals = self.graph.get_terminals()
-        for node, adj_list in dfa_nodes.items():
+        for node, edge_list in dfa_nodes.items():
             if node not in generated_graph_nodes:
                 generated_graph_nodes[node] = Node()
 
@@ -162,26 +117,25 @@ class NFAToDFA:
             is_terminal = self.__is_node_terminal__(node, nfa_terminals)
 
             if is_start == True:
+                new_node.set_is_start(True)
                 generated_graph = Graph(start_node=new_node)
 
             new_node.set_is_start(is_start)
             new_node.set_is_terminal(is_terminal)
 
-            for action, adj_node in adj_list:
+            for action, adj_node in edge_list:
                 if adj_node not in generated_graph_nodes:
                     generated_graph_nodes[adj_node] = Node()
                 new_node.add_edge(generated_graph_nodes[adj_node], action)
         return generated_graph
 
+    def convert(self) -> Graph:
+        nodes = self.__get_dfa_adjacency_list__()
+        return self.__get_graph_from_dfa_nodes__(nodes)
+
 
 if __name__ == "__main__":
     jsonG = JsonUtils.get_dict_from_file("data1.json")
-    g = Graph(jsonG)
+    g = GraphBuilder.fromJson(jsonG)
     nfaConverter = NFAToDFA(g)
-    adj = nfaConverter.__get_adjacency_list__(
-        g.get_start(), set())
-    nodes = nfaConverter.__get_dfa_nodes__()
-    print(nodes)
-    g3 = nfaConverter.__get_graph_from_dfa_nodes__(nodes)
-    print(g3)
-    Drawer.save_finite_automaton(g3)
+    Drawer.save_finite_automaton(nfaConverter.convert())
