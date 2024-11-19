@@ -62,7 +62,7 @@ class DFAMinimizer():
         minimized_graph = Graph()
         groups = self.__split_till_no_more__()
         start_node = self.graph.get_start()
-        terminal_nodes = [node.id for node in self.graph.get_non_terminals()]
+        terminal_nodes = [node.id for node in self.graph.get_terminals()]
 
         nodes_groups = self.__get_nodes_groups__(groups)
         new_nodes: dict[GroupId, Node] = dict()
@@ -156,6 +156,7 @@ if __name__ == "__main__":
     jsonG = JsonUtils.get_dict_from_file("data1.json")
     g = GraphBuilder.fromJson(jsonG)
     g2 = NFAToDFA(g).convert()
-    # dfaMinimizer = DFAMinimizer(g2)
-    # min_g = dfaMinimizer.minimize()
+    dfaMinimizer = DFAMinimizer(g2)
+    min_g = dfaMinimizer.minimize()
     Drawer.save_finite_automaton(g2, "auto")
+    Drawer.save_finite_automaton(min_g, "auto1")
