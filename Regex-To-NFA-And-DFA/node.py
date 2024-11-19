@@ -45,6 +45,9 @@ class Node:
     def get_edges(self) -> list[Edge]:
         return self.edges
 
+    def remove_edge(self, edge: Edge) -> None:
+        self.edges.remove(edge)
+
     def to_json(self):
         json = {}
         json[JsonNamings.TERMINATING_STATE] = bool(self.is_terminal)
@@ -55,6 +58,9 @@ class Node:
             else:
                 json[edge.action].append(str(edge.dest.id))
         return json
+
+    def __str__(self) -> str:
+        return self.id
 
 
 if __name__ == "__main__":
