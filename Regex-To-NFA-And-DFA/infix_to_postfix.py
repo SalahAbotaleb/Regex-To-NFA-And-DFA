@@ -30,7 +30,7 @@ def infix_to_postfix(infix:str):
             classes = True
         if infix[j] == ']':
             classes = False
-        if (infix[j].isalnum() or infix[j] == ')' or infix[j] == ']') and (infix[j+1].isalnum() or infix[j+1] == '(' or infix[j+1] == '[') and not classes:
+        if (infix[j].isalnum() or infix[j] == ')' or infix[j] == ']' or infix[j]=='.') and (infix[j+1].isalnum() or infix[j+1] == '(' or infix[j+1] == '[' or infix[j+1] == '.') and not classes:
             infix.insert(j+1, '#')
             j += 1
 
