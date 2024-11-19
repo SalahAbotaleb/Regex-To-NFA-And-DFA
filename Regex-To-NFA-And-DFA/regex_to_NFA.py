@@ -34,7 +34,7 @@ def regex_to_NFA(regex: str) -> Graph:
 
 
 if __name__ == '__main__':
-    regex = "a*?"
+    regex = "[1-9]|([1-9][0-9])|(1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])"
     graph = regex_to_NFA(regex)
     if  isinstance(graph,Graph):
         Drawer.save_finite_automaton(graph, "regex ")

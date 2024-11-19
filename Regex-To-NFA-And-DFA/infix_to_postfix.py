@@ -87,14 +87,21 @@ def infix_to_postfix(infix:str):
             if not classes:
                 return False,"- not in square brackets"                # '-' is not in a square bracket
             prev_char = postfix[-1]
+            take_prev = True
+            if prev_char == '|':
+                prev_char = postfix[-2]                                 # if the previous character is '|' then the character before it is the one we want
+                take_prev = False
             next_char = infix[i+1]
             upper = (prev_char in upper_alphabet and next_char in upper_alphabet)
             lower = (prev_char in lower_alphabet and next_char in lower_alphabet)
             digit = (prev_char in digits and next_char in digits)
             if not (upper or lower or digit) or ord(next_char) < ord(prev_char): # next_char is before prev_char
                 return False,"Pattern Error"                                    # '-' is not between two same type of characters or characters are not in order
-            postfix[-1] = prev_char + '-' + next_char
-            i += 1
+            if take_prev:
+                postfix[-1] = prev_char + '-' + next_char
+            else:
+                postfix[-2] = prev_char + '-' + next_char
+
             skip = True
         elif c.isalnum() or c == '.':
             postfix.append(c)
