@@ -2,13 +2,15 @@
 from graph_functions import *
 from infix_to_postfix import infix_to_postfix
 from draw import Drawer
+
+
 def regex_to_NFA(regex: str) -> Graph:
     '''
     Returns a new graph that is the result of the regex to NFA operation on the input regex.
     '''
     postfix = infix_to_postfix(regex)
     if not postfix[0]:
-        return postfix[1]
+        raise ValueError(postfix[1])
     stack = []
     for char in postfix[1]:
         if char == '|':
@@ -36,7 +38,7 @@ def regex_to_NFA(regex: str) -> Graph:
 if __name__ == '__main__':
     regex = "[1-9]|([1-9][0-9])|(1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])"
     graph = regex_to_NFA(regex)
-    if  isinstance(graph,Graph):
+    if isinstance(graph, Graph):
         Drawer.save_finite_automaton(graph, "regex ")
     else:
         print(graph)
