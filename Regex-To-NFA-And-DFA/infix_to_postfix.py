@@ -25,12 +25,12 @@ def infix_to_postfix(infix:str):
         # checks that an | operator is followed by a quantifier
         if infix[j] in ['*','+','?'] and infix[j+1] in ['*','+','?']:
             return False,"Quantifier Overwrite"
-            
+
         if infix[j] in ['('] and infix[j+1] in ['*','+','?','|']:
             return False,"Quantifier after '('"
 
-        if infix[j] == '|' and infix[j+1] in ['*','+','?',')',']']:
-            return False,"| followed by a quantifier or a closing bracket"
+        if infix[j] == '|' and infix[j+1] in ['*','+','?',')',']','|']:
+            return False,"| followed by a quantifier or a closing bracket or |"
 
         if infix[j] == '[':
             classes = True
@@ -129,8 +129,6 @@ def infix_to_postfix(infix:str):
     if '[' in postfix or ']' in postfix:
         return False,"Unmatched square bracket"# Unmatched square bracket
     return True,postfix
-
-
 if __name__ == "__main__":
     infix = "ab|cd(ef|d)[ghlma][a-z]"
     print(infix_to_postfix(infix))
