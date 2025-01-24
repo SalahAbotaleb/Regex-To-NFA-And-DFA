@@ -2,20 +2,14 @@
     "startingState": "S0",
     "S0": {
         "isTerminatingState": false,
-        "a": [
+        "B": [
             "S1"
         ],
-        "abc": [
-            "S2"
+        "A": [
+            "S1"
         ]
     },
     "S1": {
-        "isTerminatingState": false,
-        "xyz": [
-            "S2"
-        ]
-    },
-    "S2": {
         "isTerminatingState": true
     }
 }
