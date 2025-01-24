@@ -56,7 +56,7 @@ python __test_patterns__.py
 **NFA**
 ![NFA](./screenshots/nfa1.png)
 
-**DFA**
+**Minimized DFA**
 ![DFA](./screenshots/dfa1.png)
 
 
@@ -65,5 +65,5 @@ regex: ``(AB|C|[A-Z]S*)+ABC``
 **NFA**
 ![NFA](./screenshots/nfa2.png)
 
-**DFA**
+**Minimized DFA**
 ![DFA](./screenshots/dfa2.png)
