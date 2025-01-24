@@ -54,15 +54,15 @@ python __test_patterns__.py
 regex: ``(A|B)*.C``
 
 NFA
-![NFA](./images/nfa1.png)
+![NFA](./screenshots/nfa1.png)
 
 DFA
-![DFA](./images/dfa1.png)
+![DFA](./screenshots/dfa1.png)
 
 regex: ``(AB|C|[A-Z]S*)+ABC``
 
 NFA
-![NFA](./images/nfa2.png)
+![NFA](./screenshots/nfa2.png)
 
 DFA
-![DFA](./images/dfa2.png)
+![DFA](./screenshots/dfa2.png)
