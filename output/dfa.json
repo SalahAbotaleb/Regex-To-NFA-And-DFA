@@ -3,13 +3,22 @@
     "S0": {
         "isTerminatingState": false,
         "B": [
+            "S0"
+        ],
+        ".": [
             "S1"
         ],
         "A": [
-            "S1"
+            "S0"
         ]
     },
     "S1": {
+        "isTerminatingState": false,
+        "C": [
+            "S2"
+        ]
+    },
+    "S2": {
         "isTerminatingState": true
     }
 }

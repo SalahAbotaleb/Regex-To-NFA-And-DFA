@@ -3,7 +3,8 @@
     "S0": {
         "isTerminatingState": false,
         "epsilon": [
-            "S1"
+            "S1",
+            "S5"
         ]
     },
     "S1": {
@@ -15,7 +16,7 @@
     },
     "S2": {
         "isTerminatingState": false,
-        "A-Z": [
+        "A": [
             "S3"
         ]
     },
@@ -40,22 +41,20 @@
     },
     "S6": {
         "isTerminatingState": false,
-        "epsilon": [
-            "S7",
-            "S9"
+        ".": [
+            "S7"
         ]
     },
     "S7": {
         "isTerminatingState": false,
-        "0-9": [
+        "epsilon": [
             "S8"
         ]
     },
     "S8": {
         "isTerminatingState": false,
-        "epsilon": [
-            "S9",
-            "S6"
+        "C": [
+            "S9"
         ]
     },
     "S9": {
@@ -63,7 +62,7 @@
     },
     "S10": {
         "isTerminatingState": false,
-        "a-z": [
+        "B": [
             "S11"
         ]
     },
