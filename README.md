@@ -31,7 +31,7 @@ pip install graphviz
 3. Run the application
 ```bash
 cd src
-python __main__.py "(A|B)*.C"
+python main.py "(A|B)*.C"
 ```
 replace the regex with the desired one
 
@@ -41,7 +41,7 @@ The application will generate the NFA and minimized DFA for the given regex and 
 
 You can supply the ``--output_dir`` flag to specify the output folder
 ```bash
-python __main__.py "(A|B)*.C" --output_dir ../output
+python main.py "(A|B)*.C" --output_dir ../output
 ```
 
 There are some examples in file ``__test_patterns__.py`` that you can run

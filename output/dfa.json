@@ -2,13 +2,13 @@
     "startingState": "S0",
     "S0": {
         "isTerminatingState": false,
-        "B": [
+        "A": [
             "S0"
         ],
         ".": [
             "S1"
         ],
-        "A": [
+        "B": [
             "S0"
         ]
     },
